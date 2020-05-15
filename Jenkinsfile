@@ -32,12 +32,12 @@ pipeline {
             steps {
                 echo 'Comienza desplegado en desarrollo...'
                 echo 'Se crea el namespace si no existe'
-                //sh "kubectl get ns ${namespace} || kubectl create ns ${namespace}"
+                bat "kubectl get ns ${namespace} || kubectl create ns ${namespace}"
                 //echo 'Update the imagetag to the latest version'
-                //sh "sed -i.bak 's#.*gcr.io.*#        image: gcr.io/${projectGCP}/${applicationName}:${versionImage}-${env.BUILD_NUMBER}#'  deployment.yaml"
+                bat "sed -i.bak 's#.*gcr.io.*#        image: gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}#'  deployment.yaml"
                 echo 'Create or update resources'
-                //sh "kubectl --namespace=${namespace} apply -f deployment.yaml"
-                //sh "kubectl --namespace=${namespace} apply -f k8s/development/service.yaml"
+                bat "kubectl apply -f deployment.yaml"
+                bat "kubectl apply -f k8s/development/service.yaml"
             }
         }
     }
