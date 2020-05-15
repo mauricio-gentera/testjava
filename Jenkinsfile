@@ -19,7 +19,7 @@ pipeline {
         stage('Push a GCP') {
             steps {
                 echo 'Inicia el envío de la imagen al Container Registry...'
-                sh "docker push gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}"
+                bat "docker push gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}"
             }
         }
         stage('Pruebas Unitarias') {
