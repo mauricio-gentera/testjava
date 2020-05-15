@@ -1,0 +1,19 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: pocdevops
+  namespace: pocdevops
+  labels:
+    app: pocdevops
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        apps: pocdevops-service
+    spec:
+      containers:
+      - name: pocdevops-service
+        image: gcr.io/com-poc-ci-cd/pocdevops:0.0.1
+        ports:
+        - containerPort: 8080
