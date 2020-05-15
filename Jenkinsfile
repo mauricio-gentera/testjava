@@ -35,7 +35,7 @@ pipeline {
                 bat "kubectl get ns ${namespace} || kubectl create ns ${namespace}"
                 //echo 'Update the imagetag to the latest version'
                 //bat "sed -i.bak 's#.*gcr.io.*#        image: gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}#'  deployment.yaml"
-                bat cscript replace.vbs 'deployment.yaml' 'gcr.io' 'gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}'
+                bat cscript replace.vbs "deployment.yaml" "gcr.io" "gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}"
 				echo 'Create or update resources'
                 bat "kubectl apply -f deployment.yaml"
                 bat "kubectl apply -f k8s/development/service.yaml"
