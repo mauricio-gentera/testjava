@@ -11,7 +11,7 @@ pipeline {
         stage('Construcción Imagen') {
             steps {
                 echo 'Inicia construcción del proyecto...'
-                //sh 'gradlew.bat clean build'
+                sh 'gradlew.bat clean build'
                 echo 'Armando la imagen para subir a Google Cloud Platform'
                 sh "docker build -t  gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER} ."
             }
