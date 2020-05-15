@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: pocdevops-service
-        image: gcr.io/com-poc-ci-cd/pocdevops:0.0.1
+        image: gcr.io
         ports:
         - containerPort: 8080
