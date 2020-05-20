@@ -11,15 +11,15 @@ pipeline {
         stage('Construcción Imagen') {
             steps {
                 echo 'Inicia construcción del proyecto...'
-                bat 'gradlew.bat clean build'
+                sh 'gradlew.bat clean build'
                 echo 'Armando la imagen para subir a Google Cloud Platform'
-                bat "docker build -t  gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER} ."
+                sh "docker build -t  gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER} ."
             }
         }
         stage('Push a GCP') {
             steps {
                 echo 'Inicia el envío de la imagen al Container Registry...'
-                bat "docker push gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}"
+                sh "docker push gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}"
             }
         }
         stage('Pruebas Unitarias') {
@@ -32,13 +32,13 @@ pipeline {
             steps {
                 echo 'Comienza desplegado en desarrollo...'
                 echo 'Se crea el namespace si no existe'
-                bat "kubectl get ns ${namespace} || kubectl create ns ${namespace}"
+                sh "kubectl get ns ${namespace} || kubectl create ns ${namespace}"
                 //echo 'Update the imagetag to the latest version'
-                //bat "sed -i.bak 's#.*gcr.io.*#        image: gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}#'  deployment.yaml"
-                bat cscript replace.vbs "deployment.yaml" "gcr.io" "gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}"
+                sh "sed -i.bak 's#.*gcr.io.*#        image: gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}#'  deployment.yaml"
+                //sh cscript replace.vbs "deployment.yaml" "gcr.io" "gcr.io/${projectGCP}/${applicationName}:${versionImage}${env.BUILD_NUMBER}"
 				echo 'Create or update resources'
-                bat "kubectl apply -f deployment.yaml"
-                bat "kubectl apply -f k8s/development/service.yaml"
+                sh "kubectl apply -f deployment.yaml"
+                sh "kubectl apply -f k8s/development/service.yaml"
             }
         }
     }
